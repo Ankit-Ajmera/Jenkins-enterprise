@@ -1,0 +1,44 @@
+{
+    "variables" : {
+        "region" : "",
+        "source_ami" : "",
+        "ami_name" : ""
+    },
+    "builders" : [
+        {
+            "type" : "amazon-ebs",
+            "profile" : "default",
+            "region" : "{{user `region`}}",
+            "instance_type" : "t2.micro",
+            "ami_name" : "{{user `ami_name`}}",
+            "source_ami" : "{{user `source_ami`}}",
+            "ssh_username" : "ec2-user",
+            "ami_name" : "jenkins-slave",
+            "ami_description" : "Amazon Linux Image for Jenkins Slave",
+            "run_tags" : {
+                "Name" : "packer-jenkins-slave"
+            },
+            "tags" : {
+                "Tool" : "Packer",
+                "Author" : "ankit"
+            }
+        }
+    ],
+    "provisioners" : [
+        {
+            "type" : "file",
+            "source" : "./required_data/id_rsa",
+            "destination" : "/tmp/id_rsa"
+        },
+        {
+            "type" : "file",
+            "source" : "./required_data/id_rsa.pub",
+            "destination" : "/tmp/id_rsa.pub"
+        },
+        {
+            "type" : "shell",
+            "script" : "./required_data/setup.sh",
+            "execute_command" : "sudo -E -S sh '{{ .Path }}'"
+        }
+    ]
+}

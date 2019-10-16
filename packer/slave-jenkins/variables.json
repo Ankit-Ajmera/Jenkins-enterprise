@@ -1,0 +1,5 @@
+{
+"region": "us-east-2",
+"source_ami": "ami-00c03f7f7f2ec15c3",
+"ami_name": "jenkins_slave_ami"
+}
